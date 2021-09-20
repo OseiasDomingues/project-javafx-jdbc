@@ -19,12 +19,8 @@ import java.util.ResourceBundle;
 
 public class DepartmentListController implements Initializable {
 
-
-
     //Injeção de dependencia via Contrutor
     private DepartmentService service;
-
-
 
     @FXML
     private Button btn;
@@ -43,7 +39,7 @@ public class DepartmentListController implements Initializable {
     }
 
     @FXML
-    public void onBtnAction(){
+    public void onBtnAction() {
         System.out.println("Click");
     }
 
@@ -62,8 +58,8 @@ public class DepartmentListController implements Initializable {
 
     }
 
-    public void updateTableView(){
-        if (service == null){
+    public void updateTableView() {
+        if (service == null) {
             throw new IllegalStateException("Service was null!");
         }
         List<Department> list = service.findAll();

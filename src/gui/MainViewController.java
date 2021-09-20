@@ -1,6 +1,7 @@
 package gui;
 
 import application.Main;
+import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,14 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.services.DepartmentService;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import gui.util.Alerts;
-import model.services.DepartmentService;
+import java.util.function.Consumer;
 
 
 public class MainViewController implements Initializable {
@@ -35,15 +35,19 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemDepartmentAction() {
-        loadViewOther("/gui/DepartmentList.fxml");
+        loadView("/gui/DepartmentList.fxml" , (DepartmentListController controller) -> {
+            controller.setDepartmentService(new DepartmentService());
+            controller.updateTableView();
+        });
     }
 
     @FXML
     public void onMenuItemAboutAction() {
-        loadView("/gui/About.fxml");
+        loadView("/gui/About.fxml", (x) -> {});
     }
 
-    private synchronized void loadView(String absoluteName) {
+
+    private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
         try {
             //Carregar o FXML
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -64,36 +68,8 @@ public class MainViewController implements Initializable {
             mainVBox.getChildren().add(menuTemp);
             mainVBox.getChildren().addAll(newVBox.getChildren());
 
-        } catch (IOException e) {
-            Alerts.showAlert("Error", "Error About View", e.getMessage(), Alert.AlertType.ERROR);
-        }
-
-    }
-
-    private synchronized void loadViewOther(String absoluteName) {
-        try {
-            //Carregar o FXML
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
-            //Passar para um tipo VBOX
-            VBox newVBox = fxmlLoader.load();
-
-            //Cena Principal
-            Scene mainScene = Main.getMainScene();
-
-            //Pegando o conteudo do ScrollPane, no caso o VBox
-            VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-
-            //Passando o Menu para um variavel temporaria
-            Node menuTemp = mainVBox.getChildren().get(0);
-            //Limpado o VBox
-            mainVBox.getChildren().clear();
-            //Adicionado o Menu + a nova View
-            mainVBox.getChildren().add(menuTemp);
-            mainVBox.getChildren().addAll(newVBox.getChildren());
-
-            DepartmentListController departmentListController = fxmlLoader.getController();
-            departmentListController.setDepartmentService(new DepartmentService());
-            departmentListController.updateTableView();
+            T controller = fxmlLoader.getController();
+            initializingAction.accept(controller);
 
         } catch (IOException e) {
             Alerts.showAlert("Error", "Error About View", e.getMessage(), Alert.AlertType.ERROR);
