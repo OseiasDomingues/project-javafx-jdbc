@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import gui.util.Alerts;
+import model.services.DepartmentService;
 
 
 public class MainViewController implements Initializable {
@@ -34,7 +35,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     public void onMenuItemDepartmentAction() {
-        loadView("/gui/DepartmentList.fxml");
+        loadViewOther("/gui/DepartmentList.fxml");
     }
 
     @FXML
@@ -61,7 +62,38 @@ public class MainViewController implements Initializable {
             mainVBox.getChildren().clear();
             //Adicionado o Menu + a nova View
             mainVBox.getChildren().add(menuTemp);
-            mainVBox.getChildren().addAll(newVBox);
+            mainVBox.getChildren().addAll(newVBox.getChildren());
+
+        } catch (IOException e) {
+            Alerts.showAlert("Error", "Error About View", e.getMessage(), Alert.AlertType.ERROR);
+        }
+
+    }
+
+    private synchronized void loadViewOther(String absoluteName) {
+        try {
+            //Carregar o FXML
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
+            //Passar para um tipo VBOX
+            VBox newVBox = fxmlLoader.load();
+
+            //Cena Principal
+            Scene mainScene = Main.getMainScene();
+
+            //Pegando o conteudo do ScrollPane, no caso o VBox
+            VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+
+            //Passando o Menu para um variavel temporaria
+            Node menuTemp = mainVBox.getChildren().get(0);
+            //Limpado o VBox
+            mainVBox.getChildren().clear();
+            //Adicionado o Menu + a nova View
+            mainVBox.getChildren().add(menuTemp);
+            mainVBox.getChildren().addAll(newVBox.getChildren());
+
+            DepartmentListController departmentListController = fxmlLoader.getController();
+            departmentListController.setDepartmentService(new DepartmentService());
+            departmentListController.updateTableView();
 
         } catch (IOException e) {
             Alerts.showAlert("Error", "Error About View", e.getMessage(), Alert.AlertType.ERROR);

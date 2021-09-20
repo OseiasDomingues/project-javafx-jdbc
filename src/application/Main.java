@@ -26,6 +26,7 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../gui/MainView.fxml"));
             ScrollPane scrollPane = fxmlLoader.load();
 
+            //Força os nodes ficarem do tamanho do scrollPane
             scrollPane.setFitToHeight(true);
             scrollPane.setFitToWidth(true);
 
