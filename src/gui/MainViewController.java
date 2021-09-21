@@ -41,6 +41,7 @@ public class MainViewController implements Initializable {
         });
     }
 
+
     @FXML
     public void onMenuItemAboutAction() {
         loadView("/gui/About.fxml", (x) -> {});
@@ -70,6 +71,9 @@ public class MainViewController implements Initializable {
 
             T controller = fxmlLoader.getController();
             initializingAction.accept(controller);
+
+            /*<T> Vai ser substituido pelo atribuito quem vem na expressao Lambda,neste caso DeparmentListController
+            * Antes da linha 72, controller da expressao é nulo, apos a linha 73 a expressao vai receber controller com os getController().*/
 
         } catch (IOException e) {
             Alerts.showAlert("Error", "Error About View", e.getMessage(), Alert.AlertType.ERROR);
