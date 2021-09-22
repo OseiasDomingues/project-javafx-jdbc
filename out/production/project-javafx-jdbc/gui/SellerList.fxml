@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="511.0" prefWidth="674.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SellerListController">
+   <children>
+      <Label text="Seller List" />
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button fx:id="btn" mnemonicParsing="false" onAction="#onBtnAction" text="New" />
+        </items>
+      </ToolBar>
+      <TableView fx:id="tableViewSeller" prefHeight="285.0" prefWidth="674.0">
+        <columns>
+          <TableColumn fx:id="tableColumnID" prefWidth="75.0" text="ID" />
+          <TableColumn fx:id="tableColumnName" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="tableColumnEDIT" prefWidth="75.0" />
+            <TableColumn fx:id="tableColumnREMOVE" prefWidth="75.0" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
