@@ -63,7 +63,7 @@ public class SellerListController implements Initializable, DataChangeListener {
     public void onBtnAction(ActionEvent actionEvent) {
         Stage parentStage = Utils.currentStage(actionEvent);
         Seller Seller = new Seller();
-       // createDialogForm(Seller, "/gui/SellerForm.fxml", parentStage);
+        createDialogForm(Seller, "/gui/SellerForm.fxml", parentStage);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SellerListController implements Initializable, DataChangeListener {
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-        Utils.formatTableColumnDate(tableColumnBirthDate,"dd/MM/yyyy");
+        Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
         tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
         Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 
@@ -97,7 +97,7 @@ public class SellerListController implements Initializable, DataChangeListener {
         initRemoveButtons();
     }
 
-   /* public void createDialogForm(Seller Seller, String absoluteName, Stage parentStage) {
+    public void createDialogForm(Seller Seller, String absoluteName, Stage parentStage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(absoluteName));
             Pane pane = fxmlLoader.load();
@@ -122,7 +122,7 @@ public class SellerListController implements Initializable, DataChangeListener {
         }
 
 
-    }*/
+    }
 
     @Override
     public void onDataChanged() {
@@ -142,9 +142,9 @@ public class SellerListController implements Initializable, DataChangeListener {
                     return;
                 }
                 setGraphic(button);
-//                button.setOnAction(
-//                        event -> createDialogForm(
-//                                obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
+                button.setOnAction(
+                        event -> createDialogForm(
+                                obj, "/gui/SellerForm.fxml", Utils.currentStage(event)));
             }
         });
     }
